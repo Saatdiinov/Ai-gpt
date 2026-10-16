@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblldb-dev libffi-dev liblzma-dev readline-common libreadline-dev libsq3-dev zip unzip openjdk-17-jdk git ccache
+        sudo apt-get install -y build-essential libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblldb-dev libffi-dev liblzma-dev readline-common libreadline-dev zip unzip openjdk-17-jdk git ccache
         pip install --upgrade pip
         pip install "cython<3.0.0" "buildozer==1.5.0"
 
@@ -33,4 +33,3 @@ jobs:
       with:
         name: elyor-ai-release
         path: bin/*.aab
-
