@@ -1,23 +1,35 @@
-[app]
-title = Elyor AI
-package.name = elyorai
-package.domain = com.elyor
-source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
-version = 0.1
-requirements = python3,kivy==2.2.1,urllib3
-orientation = portrait
-osx.python_version = 3
-osx.kivy_version = 1.9.1
-fullscreen = 0
-android.permissions = INTERNET
-android.api = 33
-android.minapi = 24
-android.ndk = 25b
-android.ndk_api = 21
-android.accept_sdk_license = True
-android.archs = arm64-v8a
+name: Build Android Release
 
-[buildozer]
-log_level = 2
-warn_on_root = 1
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblldb-dev libffi-dev liblzma-dev readline-common libreadline-dev zip unzip openjdk-17-jdk git ccache
+        pip install --upgrade pip
+        pip install "cython<3.0.0" git+https://github.com/kivy/buildozer.git
+
+    - name: Build with Buildozer
+      run: |
+        yes | buildozer android release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: elyor-ai-release
+        path: bin/*.aab
