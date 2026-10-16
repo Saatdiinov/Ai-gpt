@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
@@ -21,14 +21,15 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblldb-dev libffi-dev liblzma-dev readline-common libreadline-dev libsq3-dev zip unzip openjdk-17-jdk git ccache
-        pip install --upgrade "pip<24.1" "cython<3.0.0" "buildozer==1.5.0"
+        pip install --upgrade pip
+        pip install "cython<3.0.0" "buildozer==1.5.0"
 
     - name: Build with Buildozer
       run: |
         yes | buildozer android release
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: elyor-ai-release
         path: bin/*.aab
